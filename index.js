@@ -86,6 +86,23 @@ app.put('/orders/:order_id', (req, res) => {
   });
 });
 
+app.put('/orders/:order_id/items/:order_item_seq_id', (req, res) => {
+  const orderId = req.params.order_id;
+  const order_item_seq_id = req.params.order_item_seq_id;
+  const orderData = req.body;
+  const query = `
+    UPDATE Order_Item
+    SET order_item = ?, quantity = ?, status = ?
+    WHERE order_id = ? AND order_item_seq_id = ?`;
+  
+  db.query(query, [orderData.shipping_contact_mech_id, orderData.billing_contact_mech_id, orderId, orderData.order_item, orderData.quantity, orderData.status, orderData.order_item_seq_id ], (err, result) => {
+    if (err) {
+      return res.status(500).send({ message: 'Error updating order', error: err });
+    }
+    res.status(200).send({ message: 'Order updated (PUT API Completed)'  });
+  });
+});
+
 
 
 app.delete('/orders/:order_id', (req, res) => {
@@ -100,6 +117,19 @@ app.delete('/orders/:order_id', (req, res) => {
   });
 });
 
+app.delete('/orders/:order_id/items/:order_item_seq_id', (req, res) => {
+  const orderId = req.params.order_id;
+  const orderItemSeqId = req.params.order_item_seq_id;
+  
+  const query = `DELETE FROM Order_Item WHERE order_id = ? AND order_item_seq_id = ?`;
+  
+  db.query(query, [orderId, orderItemSeqId], (err, result) => {
+    if (err) {
+      return res.status(500).send({ message: 'Error deleting order item', error: err });
+    }
+    res.status(200).send({ message: 'Order item deleted (DELETE API Completed)' });
+  });
+});
 
 
 
