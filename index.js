@@ -2,14 +2,15 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 
+
 const app = express();
 app.use(bodyParser.json());
 
 
 const db = mysql.createConnection({
-  host: 'Viraj',
+  host: 'localhost',
   user: 'root', 
-  password: '${process.env.PSWD}', 
+  password: '1905', 
   database: 'ecommerce'
 });
 
@@ -45,7 +46,7 @@ app.post('/orders', (req, res) => {
         }
       });
     });
-    res.status(201).send({ message: 'Order created', orderId: orderId });
+    res.status(201).send({ message: 'Order created  (Post API Completed)', orderId: orderId });
   });
 });
 
@@ -81,7 +82,7 @@ app.put('/orders/:order_id', (req, res) => {
     if (err) {
       return res.status(500).send({ message: 'Error updating order', error: err });
     }
-    res.status(200).send({ message: 'Order updated' });
+    res.status(200).send({ message: 'Order updated (PUT API Completed)'  });
   });
 });
 
@@ -95,9 +96,10 @@ app.delete('/orders/:order_id', (req, res) => {
     if (err) {
       return res.status(500).send({ message: 'Error deleting order', error: err });
     }
-    res.status(200).send({ message: 'Order deleted' });
+    res.status(200).send({ message: 'Order deleted (DELETE API Completed)' });
   });
 });
+
 
 
 
